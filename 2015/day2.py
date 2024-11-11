@@ -1045,12 +1045,17 @@ if __name__ == "__main__":
     # Raplace the multiplication sign to a valid python operator (*)
     starred_input = input.replace("x", "*")
     print(starred_input)
-
-    # master_list = []
-
-    # unstared_list = remove_star(input)
     
-    # result = get_values(unstared_list)
+    # Make it a list 
+    listed_starred_input = starred_input.split()
+    print(listed_starred_input)
+
+    unstared_list = remove_star(listed_starred_input)
+    
+    result = get_values(unstared_list)
+    
+    final_result = sum(result)
+    print(final_result)
 
 
   
