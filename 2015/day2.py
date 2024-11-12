@@ -1,3 +1,4 @@
+## Advent Of Code Day 2 ##
 
 # Function that removes the star from the string
 
@@ -12,33 +13,80 @@ def remove_star(a_list):
 # Function to get values from the list 
 
 def get_values(a_list):
-    result_list = []
+    get_values_list = []
+    list_depth = 0
+    for i in range(len(a_list)):
+        expression_list = []
+        length = int(a_list[list_depth][0])
+        width = int(a_list[list_depth][1])
+        height = int(a_list[list_depth][2])
+        list_depth += 1
+        
+        expression_list.append(length)
+        expression_list.append(width)
+        expression_list.append(height)
+        
+        get_values_list.append(expression_list)
+        
+    return get_values_list
+        
+# Function to calculate total amount of wrapping paper
+
+def calculate_amount_wrapping_paper(a_list):
+    calculated_list = []
     list_depth = 0
     for i in range(len(a_list)):
         length = int(a_list[list_depth][0])
         width = int(a_list[list_depth][1])
         heigth = int(a_list[list_depth][2])
         list_depth += 1
-        
-        result = calculate_amount_wrapping_paper(length, width, heigth)
-        result_list.append(result)
-        
-    return result_list
-        
-# Function to calculate total amount of wrapping paper
 
-def calculate_amount_wrapping_paper(length, width, heigth):
-    
-    # Get smallest side
-    a = (length*width)
-    b = (width*heigth)
-    c = (heigth*length)
-    
-    smallest_side = min(a, b, c)
-    
-    return ((2*length*width) + (2*width*heigth) + (2*heigth*length) + smallest_side)
+        # Get smallest side
+        a = (length*width)
+        b = (width*heigth)
+        c = (heigth*length)
+        
+        smallest_side = min(a, b, c)
+        
+        result = ((2*length*width) + (2*width*heigth) + (2*heigth*length) + smallest_side)
+        
+        calculated_list.append(result)
+        
+    return sum(calculated_list)
 
-
+def get_total_ribbon(a_list):
+    calculated_list = []
+    list_depth = 0
+    for i in range(len(a_list)):
+        length = int(a_list[list_depth][0])
+        width = int(a_list[list_depth][1])
+        height = int(a_list[list_depth][2])
+        list_depth += 1
+        
+        # Find the two smallest sides
+        size_one = 0
+        size_two = 0
+        get_max_number = max(length, width, height)
+        if get_max_number == length:
+            size_one = width
+            size_two = height
+        elif get_max_number == width:
+            size_one = height
+            size_two = length
+        elif get_max_number == height:
+            size_one = length
+            size_two = width
+    
+        ribbon_for_wrap = ((size_one + size_one) + (size_two + size_two))
+        ribbon_for_bow = (length * width * height)
+        
+        total_ribbon = ribbon_for_bow + ribbon_for_wrap
+        
+        calculated_list.append(total_ribbon)
+            
+    return sum(calculated_list)
+    
+    
 if __name__ == "__main__":
     
     input = """4x23x21
@@ -1044,18 +1092,29 @@ if __name__ == "__main__":
     
     # Raplace the multiplication sign to a valid python operator (*)
     starred_input = input.replace("x", "*")
-    print(starred_input)
+    #print(starred_input)
     
     # Make it a list 
     listed_starred_input = starred_input.split()
-    print(listed_starred_input)
-
+    #print(listed_starred_input)
+    
+    # Remove the star from the expressions
     unstared_list = remove_star(listed_starred_input)
+    #print(unstared_list)
     
-    result = get_values(unstared_list)
+    # Get values from unstarred list
+    get_values_list = get_values(unstared_list)
+    #print(get_values_list)
     
-    final_result = sum(result)
-    print(final_result)
+    # Calculate total from get values list
+    total_wrapping_paper = calculate_amount_wrapping_paper(get_values_list)
+    print(total_wrapping_paper)
+    
+    # Part 2
+    
+    # Get total amount of ribbon
+    total_ribbon = get_total_ribbon(get_values_list)
+    print(total_ribbon)
 
 
   
